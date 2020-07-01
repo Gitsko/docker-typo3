@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-FROM php:7.4-apache-buster
+FROM php:7.1.33-apache
 LABEL maintainer="Martin Helmich <typo3@martin-helmich.de>"
 
 # Install TYPO3
