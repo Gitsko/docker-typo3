@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-FROM php:7.1.33-fpm
+FROM php:7.1.33-apache
 LABEL maintainer="Martin Helmich <typo3@martin-helmich.de>"
 
 # Install TYPO3
@@ -27,14 +27,12 @@ RUN apt-get update && \
         libjpeg62-turbo-dev \
         libmcrypt-dev \
         libpng-dev \
-        libpq-dev \
-        libzip-dev \
         zlib1g-dev \
 # Install required 3rd party tools
         graphicsmagick && \
 # Configure extensions
-    docker-php-ext-configure gd --with-libdir=/usr/include/ --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
-    docker-php-ext-install -j$(nproc) mysqli soap gd zip opcache intl pgsql pdo_pgsql && \
+    docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
+    docker-php-ext-install -j$(nproc) mysqli soap gd zip opcache && \
     echo 'always_populate_raw_post_data = -1\nmax_execution_time = 240\nmax_input_vars = 1500\nupload_max_filesize = 32M\npost_max_size = 32M' > /usr/local/etc/php/conf.d/typo3.ini && \
 # Configure Apache as needed
     a2enmod rewrite && \
@@ -43,12 +41,12 @@ RUN apt-get update && \
         libxml2-dev libfreetype6-dev \
         libjpeg62-turbo-dev \
         libmcrypt-dev \
-        libpng-dev \
-        libzip-dev \
+        libpng12-dev \
         zlib1g-dev && \
     rm -rf /var/lib/apt/lists/* /usr/src/*
 
-RUN chown -R www-data. .
+RUN cd /var/www/html && \
+    chown -R www-data. .
 
 # Configure volumes
 VOLUME /var/www/html/fileadmin
