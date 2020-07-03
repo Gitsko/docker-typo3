@@ -1,7 +1,7 @@
 FROM php:7.2-apache
 
 # copy own php.ini
- COPY ./php.ini /usr/local/etc/php
+COPY config/php.ini /usr/local/etc/php
 
 # Install utilities used by TYPO3 CMS / Flow / Neos RUN apt-get update \
 RUN apt-get update \
